@@ -1,11 +1,8 @@
+import { Link } from "wouter";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp } from "lucide-react";
-
-interface TrendBook {
-  title: string;
-  coverImage: string;
-}
+import { TrendBook } from "@/data/trendCategories";
 
 interface TrendCardProps {
   category: string;
@@ -37,22 +34,21 @@ export function TrendCard({
       {/* トップ3書籍 */}
       <div className="space-y-3">
         {topBooks.map((book, index) => (
-          <div
-            key={index}
-            className="flex items-center gap-3 p-2 rounded hover:bg-muted/50 transition-colors cursor-pointer"
-          >
-            <span className="text-lg font-semibold text-muted-foreground w-6">
-              {index + 1}
-            </span>
-            <img
-              src={book.coverImage}
-              alt={book.title}
-              className="w-12 h-16 object-cover rounded shadow-sm"
-            />
-            <p className="text-sm font-medium text-foreground line-clamp-2 flex-1">
-              {book.title}
-            </p>
-          </div>
+          <Link key={index} href={`/book/${book.id}`}>
+            <div className="flex items-center gap-3 p-2 rounded hover:bg-muted/50 transition-colors cursor-pointer">
+              <span className="text-lg font-semibold text-muted-foreground w-6">
+                {index + 1}
+              </span>
+              <img
+                src={book.coverImage}
+                alt={book.title}
+                className="w-12 h-16 object-cover rounded shadow-sm"
+              />
+              <p className="text-sm font-medium text-foreground line-clamp-2 flex-1">
+                {book.title}
+              </p>
+            </div>
+          </Link>
         ))}
       </div>
     </Card>

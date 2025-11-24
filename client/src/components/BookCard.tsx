@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Star, MessageSquare, ExternalLink } from "lucide-react";
 
 interface BookCardProps {
+  id?: number;
   rank: number;
   title: string;
   author: string;
@@ -18,18 +19,24 @@ interface BookCardProps {
 }
 
 export function BookCard({
-  rank,
-  title,
-  author,
-  publishDate,
-  coverImage,
-  rating,
-  reviewCount,
-  qiitaMentions,
-  tags,
-  amazonUrl,
-  rakutenUrl,
-}: BookCardProps) {
+                           id,
+                           rank,
+                           title,
+                           author,
+                           publishDate,
+                           coverImage,
+                           rating,
+                           reviewCount,
+                           qiitaMentions,
+                           tags,
+                           amazonUrl,
+                           rakutenUrl,
+                         }: BookCardProps) {
+  const handleTitleClick = () => {
+    if (id) {
+      window.location.href = `/book/${id}`;
+    }
+  };
   const isTopRank = rank <= 3;
 
   return (
@@ -50,13 +57,17 @@ export function BookCard({
         <img
           src={coverImage}
           alt={title}
-          className="w-28 h-40 md:w-32 md:h-44 object-cover rounded shadow-md hover:shadow-xl transition-shadow"
+          className="w-28 h-40 md:w-32 md:h-44 object-cover rounded shadow-md hover:shadow-xl transition-shadow cursor-pointer"
+          onClick={handleTitleClick}
         />
       </div>
 
       {/* 書籍情報 */}
       <div className="flex-1 flex flex-col gap-2">
-        <h3 className="text-lg md:text-xl font-semibold text-foreground hover:text-primary cursor-pointer">
+        <h3
+          className="text-lg md:text-xl font-semibold text-foreground hover:text-primary cursor-pointer transition-colors"
+          onClick={handleTitleClick}
+        >
           {title}
         </h3>
         <p className="text-sm text-muted-foreground">
