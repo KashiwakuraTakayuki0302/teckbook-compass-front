@@ -9,7 +9,8 @@
     "start": "NODE_ENV=production node dist/index.js",
     "check": "tsc --noEmit",
     "format": "prettier --write .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "generate:api": "openapi --input http://localhost:8080/api/openapi.yaml --output ./client/src/api --client axios"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.693.0",
@@ -87,6 +88,7 @@
     "add": "^2.0.6",
     "autoprefixer": "^10.4.20",
     "esbuild": "^0.25.0",
+    "openapi-typescript-codegen": "^0.29.0",
     "postcss": "^8.4.47",
     "prettier": "^3.6.2",
     "tailwindcss": "^4.1.14",

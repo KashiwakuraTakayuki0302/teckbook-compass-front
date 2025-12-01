@@ -3,6 +3,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp } from "lucide-react";
 import { TrendBook } from "@/data/trendCategories";
+import NoImage from "@/assets/no-image.svg";
+import { CategoryIcon } from "@/components/CategoryIcon";
 
 interface TrendCardProps {
   category: string;
@@ -18,11 +20,11 @@ export function TrendCard({
   topBooks,
 }: TrendCardProps) {
   return (
-    <Card className="p-6 hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-card to-muted/20 border-t-4 border-t-secondary hover:scale-105">
+    <Card className="p-6 hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-card to-muted/20 border-t-4 border-t-secondary">
       {/* カテゴリヘッダー */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
-          <span className="text-3xl">{icon}</span>
+          <CategoryIcon name={icon} className="text-4xl" />
           <h3 className="text-xl font-bold text-foreground">{category}</h3>
         </div>
         <Badge variant="secondary" className="bg-accent/20 text-accent-foreground font-semibold">
@@ -40,9 +42,12 @@ export function TrendCard({
                 {index + 1}
               </span>
               <img
-                src={book.coverImage}
+                src={book.coverImage || NoImage}
                 alt={book.title}
                 className="w-12 h-16 object-cover rounded shadow-sm"
+                onError={(e) => {
+                  e.currentTarget.src = NoImage;
+                }}
               />
               <p className="text-sm font-medium text-foreground line-clamp-2 flex-1">
                 {book.title}
