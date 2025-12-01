@@ -6,7 +6,10 @@ import { createRoot } from "react-dom/client";
 import superjson from "superjson";
 import App from "./App";
 import { getLoginUrl } from "./const";
+import { initOpenAPI } from "@/lib/openapi";
 import "./index.css";
+
+initOpenAPI();
 
 const queryClient = new QueryClient();
 

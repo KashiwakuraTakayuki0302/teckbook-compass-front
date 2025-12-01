@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Star, MessageSquare, ExternalLink } from "lucide-react";
+import NoImage from "@/assets/no-image.svg";
 
 interface BookCardProps {
   id?: number;
@@ -19,19 +20,19 @@ interface BookCardProps {
 }
 
 export function BookCard({
-                           id,
-                           rank,
-                           title,
-                           author,
-                           publishDate,
-                           coverImage,
-                           rating,
-                           reviewCount,
-                           qiitaMentions,
-                           tags,
-                           amazonUrl,
-                           rakutenUrl,
-                         }: BookCardProps) {
+  id,
+  rank,
+  title,
+  author,
+  publishDate,
+  coverImage,
+  rating,
+  reviewCount,
+  qiitaMentions,
+  tags,
+  amazonUrl,
+  rakutenUrl,
+}: BookCardProps) {
   const handleTitleClick = () => {
     if (id) {
       window.location.href = `/book/${id}`;
@@ -44,9 +45,8 @@ export function BookCard({
       {/* ランキング番号 */}
       <div className="flex-shrink-0 flex items-center justify-center md:justify-start md:w-16">
         <div
-          className={`text-4xl md:text-6xl font-bold ${
-            isTopRank ? "text-accent drop-shadow-sm" : "text-muted-foreground"
-          }`}
+          className={`text-4xl md:text-6xl font-bold ${isTopRank ? "text-accent drop-shadow-sm" : "text-muted-foreground"
+            }`}
         >
           {rank}
         </div>
@@ -55,10 +55,13 @@ export function BookCard({
       {/* 書籍カバー画像 */}
       <div className="flex-shrink-0 flex justify-center md:justify-start">
         <img
-          src={coverImage}
+          src={coverImage || NoImage}
           alt={title}
           className="w-28 h-40 md:w-32 md:h-44 object-cover rounded shadow-md hover:shadow-xl transition-shadow cursor-pointer"
           onClick={handleTitleClick}
+          onError={(e) => {
+            e.currentTarget.src = NoImage;
+          }}
         />
       </div>
 
@@ -80,11 +83,10 @@ export function BookCard({
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                className={`w-4 h-4 ${
-                  i < Math.floor(rating)
-                    ? "fill-accent text-accent"
-                    : "text-muted-foreground"
-                }`}
+                className={`w-4 h-4 ${i < Math.floor(rating)
+                  ? "fill-accent text-accent"
+                  : "text-muted-foreground"
+                  }`}
               />
             ))}
           </div>
@@ -115,7 +117,7 @@ export function BookCard({
           <Button
             variant="default"
             size="sm"
-            className="bg-secondary hover:bg-secondary/90 text-secondary-foreground"
+            className="bg-amber-500 hover:bg-amber-600 text-white"
             onClick={() => window.open(amazonUrl, "_blank")}
           >
             <ExternalLink className="w-4 h-4 mr-2" />
@@ -124,8 +126,9 @@ export function BookCard({
         )}
         {rakutenUrl && (
           <Button
-            variant="outline"
+            variant="default"
             size="sm"
+            className="bg-red-600 hover:bg-red-700 text-white"
             onClick={() => window.open(rakutenUrl, "_blank")}
           >
             <ExternalLink className="w-4 h-4 mr-2" />
