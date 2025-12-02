@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Book } from "lucide-react";
-import { APP_TITLE } from "@/const";
 import { BookCard } from "@/components/BookCard";
 import { TrendCard } from "@/components/TrendCard";
+import { Layout } from "@/components/Layout";
 import { useCategoriesWithBooks } from "@/hooks/useCategories";
 import { useRankings } from "@/hooks/useRankings";
 
@@ -13,30 +12,7 @@ export default function Home() {
   const { data: rankings, isLoading: isRankingsLoading, isError: isRankingsError } = useRankings(rankingPeriod);
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      {/* ヘッダー */}
-      <header className="bg-slate-800 text-white shadow-md">
-        <div className="container py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Book className="w-8 h-8" />
-              <h1 className="text-2xl font-bold">{APP_TITLE}</h1>
-            </div>
-            <nav className="hidden md:flex gap-6">
-              <a href="#" className="hover:underline">
-                ホーム
-              </a>
-              <a href="#" className="hover:underline">
-                ランキング
-              </a>
-              <a href="#" className="hover:underline">
-                タグ一覧
-              </a>
-            </nav>
-          </div>
-        </div>
-      </header>
-
+    <Layout>
       {/* ヒーローセクション */}
       <section className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground py-16 md:py-24">
         <div className="container">
@@ -81,7 +57,7 @@ export default function Home() {
                   icon={category.icon || "📚"}
                   trendIndicator={category.trendIndicator || "注目"}
                   topBooks={category.books?.map((book: any) => ({
-                    id: book.id,
+                    id: book.bookId,
                     title: book.title,
                     coverImage: book.image,
                   })) || []}
@@ -142,8 +118,8 @@ export default function Home() {
             <div className="space-y-4">
               {rankings?.items?.map((book: any) => (
                 <BookCard
-                  key={book.id}
-                  id={book.id}
+                  key={book.bookId}
+                  id={book.bookId}
                   rank={book.rank}
                   title={book.title}
                   author={book.author}
@@ -162,14 +138,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* フッター */}
-      <footer className="bg-muted py-8 mt-auto">
-        <div className="container text-center text-muted-foreground">
-          <p className="text-sm">
-            © 2025 {APP_TITLE}. Qiita記事から技術書ランキングを集計しています。
-          </p>
-        </div>
-      </footer>
-    </div>
+    </Layout>
   );
 }

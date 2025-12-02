@@ -1,3 +1,4 @@
+import { Link } from "wouter";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -5,7 +6,7 @@ import { Star, MessageSquare, ExternalLink } from "lucide-react";
 import NoImage from "@/assets/no-image.svg";
 
 interface BookCardProps {
-  id?: number;
+  id?: string;
   rank: number;
   title: string;
   author: string;
@@ -33,12 +34,8 @@ export function BookCard({
   amazonUrl,
   rakutenUrl,
 }: BookCardProps) {
-  const handleTitleClick = () => {
-    if (id) {
-      window.location.href = `/book/${id}`;
-    }
-  };
   const isTopRank = rank <= 3;
+  const bookLink = id ? `/book/${id}` : undefined;
 
   return (
     <Card className="flex flex-col md:flex-row gap-4 p-4 md:p-6 hover:shadow-lg transition-all duration-200 border-l-4 border-l-transparent hover:border-l-primary">
@@ -54,25 +51,42 @@ export function BookCard({
 
       {/* 書籍カバー画像 */}
       <div className="flex-shrink-0 flex justify-center md:justify-start">
-        <img
-          src={coverImage || NoImage}
-          alt={title}
-          className="w-28 h-40 md:w-32 md:h-44 object-cover rounded shadow-md hover:shadow-xl transition-shadow cursor-pointer"
-          onClick={handleTitleClick}
-          onError={(e) => {
-            e.currentTarget.src = NoImage;
-          }}
-        />
+        {bookLink ? (
+          <Link href={bookLink}>
+            <img
+              src={coverImage || NoImage}
+              alt={title}
+              className="w-28 h-40 md:w-32 md:h-44 object-cover rounded shadow-md hover:shadow-xl transition-shadow cursor-pointer"
+              onError={(e) => {
+                e.currentTarget.src = NoImage;
+              }}
+            />
+          </Link>
+        ) : (
+          <img
+            src={coverImage || NoImage}
+            alt={title}
+            className="w-28 h-40 md:w-32 md:h-44 object-cover rounded shadow-md"
+            onError={(e) => {
+              e.currentTarget.src = NoImage;
+            }}
+          />
+        )}
       </div>
 
       {/* 書籍情報 */}
       <div className="flex-1 flex flex-col gap-2">
-        <h3
-          className="text-lg md:text-xl font-semibold text-foreground hover:text-primary cursor-pointer transition-colors"
-          onClick={handleTitleClick}
-        >
-          {title}
-        </h3>
+        {bookLink ? (
+          <Link href={bookLink}>
+            <h3 className="text-lg md:text-xl font-semibold text-foreground hover:text-primary cursor-pointer transition-colors">
+              {title}
+            </h3>
+          </Link>
+        ) : (
+          <h3 className="text-lg md:text-xl font-semibold text-foreground">
+            {title}
+          </h3>
+        )}
         <p className="text-sm text-muted-foreground">
           {author} · {publishDate}
         </p>
