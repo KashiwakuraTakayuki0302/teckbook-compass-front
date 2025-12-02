@@ -36,9 +36,34 @@
    ```
    ブラウザで `http://localhost:3000` (または表示されたポート) にアクセスしてください。
 
+## OpenAPI API クライアント生成
+
+このプロジェクトは Go バックエンドの OpenAPI 仕様から API クライアントを自動生成します。
+
+### セットアップ
+
+1. **Go バックエンドを起動**
+   ```bash
+   # 別のターミナルで Go バックエンドを起動
+   # http://localhost:8080 で起動していることを確認
+   ```
+
+2. **API クライアントを生成**
+   ```bash
+   pnpm generate:api
+   ```
+
+3. **フロントエンドを起動**
+   ```bash
+   pnpm dev
+   ```
+
+詳細なセットアップ手順は [OPENAPI_SETUP.md](./OPENAPI_SETUP.md) を参照してください。
+
 ### その他コマンド
 - `pnpm build`: 本番用ビルド
 - `pnpm start`: 本番サーバー起動
 - `pnpm check`: TypeScript型チェック
 - `pnpm format`: コードフォーマット
 - `pnpm test`: テスト実行
+- `pnpm generate:api`: API クライアント生成 (Go バックエンド起動が必要)

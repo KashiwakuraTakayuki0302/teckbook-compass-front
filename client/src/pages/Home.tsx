@@ -1,27 +1,21 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Search, Book } from "lucide-react";
+import { Book } from "lucide-react";
 import { APP_TITLE } from "@/const";
 import { BookCard } from "@/components/BookCard";
 import { TrendCard } from "@/components/TrendCard";
-import { trendCategories } from "@/data/trendCategories";
-import { bookRankings } from "@/data/bookRankings";
+import { useCategoriesWithBooks } from "@/hooks/useCategories";
+import { useRankings } from "@/hooks/useRankings";
 
 export default function Home() {
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const handleSearch = () => {
-    if (searchQuery.trim()) {
-      // TODO: 検索結果ページへの遷移を実装
-      console.log("検索:", searchQuery);
-    }
-  };
+  const [rankingPeriod, setRankingPeriod] = useState<'all' | 'monthly' | 'yearly'>('all');
+  const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError } = useCategoriesWithBooks();
+  const { data: rankings, isLoading: isRankingsLoading, isError: isRankingsError } = useRankings(rankingPeriod);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* ヘッダー */}
-      <header className="bg-primary text-primary-foreground shadow-md">
+      <header className="bg-slate-800 text-white shadow-md">
         <div className="container py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -58,25 +52,7 @@ export default function Home() {
               エンジニアのリアルな評価で、最適な一冊に出会えます
             </p>
 
-            {/* 検索バー */}
-            <div className="flex gap-2 max-w-2xl mx-auto mt-8">
-              <Input
-                type="text"
-                placeholder="興味のある技術分野を入力（例: React, 機械学習, AWS）"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                className="bg-white text-foreground border-0 h-12 text-base"
-              />
-              <Button
-                onClick={handleSearch}
-                size="lg"
-                className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-8"
-              >
-                <Search className="w-5 h-5 mr-2" />
-                検索
-              </Button>
-            </div>
+            {/* 検索バー（後で追加予定）*/}
           </div>
         </div>
       </section>
@@ -92,11 +68,27 @@ export default function Home() {
               最新のトレンドをキャッチして、先取りしよう
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {trendCategories.map((trend, index) => (
-              <TrendCard key={index} {...trend} />
-            ))}
-          </div>
+          {isCategoriesError ? (
+            <div className="text-center text-red-500">情報を取得に失敗しました</div>
+          ) : isCategoriesLoading ? (
+            <div className="text-center">読み込み中...</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {categories?.items?.map((category: any, index: number) => (
+                <TrendCard
+                  key={category.id || index}
+                  category={category.name}
+                  icon={category.icon || "📚"}
+                  trendIndicator={category.trendIndicator || "注目"}
+                  topBooks={category.books?.map((book: any) => ({
+                    id: book.id,
+                    title: book.title,
+                    coverImage: book.image,
+                  })) || []}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -113,22 +105,60 @@ export default function Home() {
               </p>
             </div>
             <div className="flex gap-2">
-              <Button variant="default" size="sm">
+              <Button
+                variant={rankingPeriod === 'all' ? 'default' : 'outline'}
+                size="sm"
+                className="disabled:opacity-100"
+                onClick={() => setRankingPeriod('all')}
+                disabled={rankingPeriod === 'all'}
+              >
                 すべて
               </Button>
-              <Button variant="outline" size="sm">
+              <Button
+                variant={rankingPeriod === 'monthly' ? 'default' : 'outline'}
+                size="sm"
+                className="disabled:opacity-100"
+                onClick={() => setRankingPeriod('monthly')}
+                disabled={rankingPeriod === 'monthly'}
+              >
                 月間
               </Button>
-              <Button variant="outline" size="sm">
+              <Button
+                variant={rankingPeriod === 'yearly' ? 'default' : 'outline'}
+                size="sm"
+                className="disabled:opacity-100"
+                onClick={() => setRankingPeriod('yearly')}
+                disabled={rankingPeriod === 'yearly'}
+              >
                 年間
               </Button>
             </div>
           </div>
-          <div className="space-y-4">
-            {bookRankings.map((book) => (
-              <BookCard key={book.rank} {...book} />
-            ))}
-          </div>
+          {isRankingsError ? (
+            <div className="text-center text-red-500">情報を取得に失敗しました</div>
+          ) : isRankingsLoading ? (
+            <div className="text-center">読み込み中...</div>
+          ) : (
+            <div className="space-y-4">
+              {rankings?.items?.map((book: any) => (
+                <BookCard
+                  key={book.id}
+                  id={book.id}
+                  rank={book.rank}
+                  title={book.title}
+                  author={book.author}
+                  publishDate={book.publishedAt || "不明"}
+                  coverImage={book.image}
+                  rating={book.rating || 0}
+                  reviewCount={book.reviewCount || 0}
+                  qiitaMentions={book.mentions || 0}
+                  tags={book.tags || []}
+                  amazonUrl={book.amazonUrl}
+                  rakutenUrl={book.rakutenUrl}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
