@@ -16,6 +16,8 @@ export default defineConfig({
       "@": path.resolve(import.meta.dirname, "client", "src"),
       "@shared": path.resolve(import.meta.dirname, "shared"),
       "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+      // openapi-typescript-codegenが生成するform-dataインポートをブラウザ用シムで解決
+      "form-data": path.resolve(import.meta.dirname, "client", "src", "lib", "form-data-shim.ts"),
     },
   },
   envDir: path.resolve(import.meta.dirname),
