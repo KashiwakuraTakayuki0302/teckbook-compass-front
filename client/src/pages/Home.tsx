@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { BookCard } from "@/components/BookCard";
-import { TrendCard } from "@/components/TrendCard";
+// TODO: API改修後に復活させる
+// import { TrendCard } from "@/components/TrendCard";
 import { Layout } from "@/components/Layout";
-import { useCategoriesWithBooks } from "@/hooks/useCategories";
+// TODO: API改修後に復活させる
+// import { useCategoriesWithBooks } from "@/hooks/useCategories";
 import { useRankings } from "@/hooks/useRankings";
 
 export default function Home() {
   const [rankingPeriod, setRankingPeriod] = useState<'all' | 'monthly' | 'yearly'>('all');
-  const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError } = useCategoriesWithBooks();
+  // TODO: API改修後に復活させる
+  // const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError } = useCategoriesWithBooks();
   const { data: rankings, isLoading: isRankingsLoading, isError: isRankingsError } = useRankings(rankingPeriod);
 
   return (
@@ -33,7 +36,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* トレンド分野セクション */}
+      {/* TODO: API改修後に復活させる - トレンド分野セクション */}
+      {/*
       <section className="py-12 md:py-16 bg-gradient-to-b from-background to-muted/30">
         <div className="container">
           <div className="text-center mb-10">
@@ -67,20 +71,19 @@ export default function Home() {
           )}
         </div>
       </section>
+      */}
 
       {/* 技術書ランキングセクション */}
       <section className="py-12 md:py-16">
         <div className="container">
-          <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-1">
-                📚 総合ランキング
-              </h2>
-              <p className="text-sm text-muted-foreground">
-                Qiita記事で最も言及されている技術書
-              </p>
-            </div>
-            <div className="flex gap-2">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+              📚 総合ランキング
+            </h2>
+            <p className="text-sm text-muted-foreground mb-4">
+              Qiita記事で最も言及されている技術書
+            </p>
+            <div className="flex justify-center gap-2">
               <Button
                 variant={rankingPeriod === 'all' ? 'default' : 'outline'}
                 size="sm"
