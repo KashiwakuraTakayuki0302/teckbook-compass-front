@@ -127,10 +127,10 @@ export default function Home() {
                   title={book.title}
                   author={book.author}
                   publishDate={book.publishedAt || "不明"}
-                  coverImage={book.image}
+                  coverImage={book.thumbnail}
                   rating={book.rating || 0}
                   reviewCount={book.reviewCount || 0}
-                  qiitaMentions={book.mentions || 0}
+                  qiitaMentions={book.articleCount || 0}
                   tags={book.tags || []}
                   amazonUrl={book.amazonUrl}
                   rakutenUrl={book.rakutenUrl}

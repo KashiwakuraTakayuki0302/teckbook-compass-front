@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+import { useLocation } from "wouter";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -34,11 +34,28 @@ export function BookCard({
   amazonUrl,
   rakutenUrl,
 }: BookCardProps) {
+  const [, setLocation] = useLocation();
   const isTopRank = rank <= 3;
   const bookLink = id ? `/book/${id}` : undefined;
 
+  const handleCardClick = () => {
+    if (bookLink) {
+      setLocation(bookLink);
+    }
+  };
+
+  const handleButtonClick = (e: React.MouseEvent, url: string) => {
+    e.stopPropagation(); // カードのクリックイベントを止める
+    window.open(url, "_blank");
+  };
+
   return (
-    <Card className="flex flex-col md:flex-row gap-4 p-4 md:p-6 hover:shadow-lg transition-all duration-200 border-l-4 border-l-transparent hover:border-l-primary">
+    <Card
+      className={`flex flex-col md:flex-row gap-4 p-4 md:p-6 hover:shadow-lg transition-all duration-200 border-l-4 border-l-transparent hover:border-l-primary ${
+        bookLink ? "cursor-pointer" : ""
+      }`}
+      onClick={handleCardClick}
+    >
       {/* ランキング番号 */}
       <div className="flex-shrink-0 flex items-center justify-center md:justify-start md:w-16">
         <div
@@ -51,42 +68,21 @@ export function BookCard({
 
       {/* 書籍カバー画像 */}
       <div className="flex-shrink-0 flex justify-center md:justify-start">
-        {bookLink ? (
-          <Link href={bookLink}>
-            <img
-              src={coverImage || NoImage}
-              alt={title}
-              className="w-28 h-40 md:w-32 md:h-44 object-cover rounded shadow-md hover:shadow-xl transition-shadow cursor-pointer"
-              onError={(e) => {
-                e.currentTarget.src = NoImage;
-              }}
-            />
-          </Link>
-        ) : (
-          <img
-            src={coverImage || NoImage}
-            alt={title}
-            className="w-28 h-40 md:w-32 md:h-44 object-cover rounded shadow-md"
-            onError={(e) => {
-              e.currentTarget.src = NoImage;
-            }}
-          />
-        )}
+        <img
+          src={coverImage || NoImage}
+          alt={title}
+          className="w-28 h-40 md:w-32 md:h-44 object-cover rounded shadow-md hover:shadow-xl transition-shadow"
+          onError={(e) => {
+            e.currentTarget.src = NoImage;
+          }}
+        />
       </div>
 
       {/* 書籍情報 */}
       <div className="flex-1 flex flex-col gap-2">
-        {bookLink ? (
-          <Link href={bookLink}>
-            <h3 className="text-lg md:text-xl font-semibold text-foreground hover:text-primary cursor-pointer transition-colors">
-              {title}
-            </h3>
-          </Link>
-        ) : (
-          <h3 className="text-lg md:text-xl font-semibold text-foreground">
-            {title}
-          </h3>
-        )}
+        <h3 className="text-lg md:text-xl font-semibold text-foreground">
+          {title}
+        </h3>
         <p className="text-sm text-muted-foreground">
           {author} · {publishDate}
         </p>
@@ -132,7 +128,7 @@ export function BookCard({
             variant="default"
             size="sm"
             className="bg-amber-500 hover:bg-amber-600 text-white"
-            onClick={() => window.open(amazonUrl, "_blank")}
+            onClick={(e) => handleButtonClick(e, amazonUrl)}
           >
             <ExternalLink className="w-4 h-4 mr-2" />
             Amazon
@@ -143,7 +139,7 @@ export function BookCard({
             variant="default"
             size="sm"
             className="bg-red-600 hover:bg-red-700 text-white"
-            onClick={() => window.open(rakutenUrl, "_blank")}
+            onClick={(e) => handleButtonClick(e, rakutenUrl)}
           >
             <ExternalLink className="w-4 h-4 mr-2" />
             楽天
