@@ -20,6 +20,7 @@ export function Layout({ children }: LayoutProps) {
                 <h1 className="text-2xl font-bold">{APP_TITLE}</h1>
               </div>
             </Link>
+{/* TODO: 機能実装後に復活させる
             <nav className="hidden md:flex gap-6">
               <Link href="/" className="hover:underline">
                 ホーム
@@ -31,6 +32,7 @@ export function Layout({ children }: LayoutProps) {
                 タグ一覧
               </a>
             </nav>
+            */}
           </div>
         </div>
       </header>

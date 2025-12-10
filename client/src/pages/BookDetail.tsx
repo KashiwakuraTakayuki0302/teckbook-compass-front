@@ -1,5 +1,5 @@
 import { useRoute } from "wouter";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Star, ShoppingCart, ExternalLink, Loader2, Heart, Bookmark, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
@@ -99,7 +99,8 @@ function RakutenReviewSection({
   rakutenReviewSummary?: RakutenReviewSummary;
   rakutenUrl?: string;
 }) {
-  if (!rakutenReviewSummary) {
+  // 楽天レビューがない場合は非表示
+  if (!rakutenReviewSummary || !rakutenReviewSummary.totalReviews) {
     return null;
   }
 
@@ -143,6 +144,18 @@ export default function BookDetail() {
   const bookId = params?.id;
 
   const { data: book, isLoading, error } = useBookDetail(bookId);
+
+  // ページタイトルを動的に更新
+  useEffect(() => {
+    if (book?.title) {
+      document.title = `${book.title} | 技術書コンパス`;
+    }
+
+    // クリーンアップ: コンポーネントがアンマウントされたらデフォルトのタイトルに戻す
+    return () => {
+      document.title = "技術書コンパス｜技術書を活用してスキルを加速させるコツ";
+    };
+  }, [book?.title]);
 
   // ローディング中
   if (isLoading) {
@@ -226,7 +239,7 @@ export default function BookDetail() {
                       rel="noopener noreferrer"
                       className="w-full block"
                     >
-                      <Button variant="outline" className="w-full gap-2">
+                      <Button className="w-full gap-2 bg-red-600 hover:bg-red-700 text-white">
                         <ShoppingCart size={18} />
                         楽天で購入
                       </Button>
