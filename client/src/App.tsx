@@ -3,8 +3,11 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "@/pages/Home";
 import BookDetail from "@/pages/BookDetail";
 import NotFound from "@/pages/NotFound";
+import { usePageTracking } from "@/hooks/usePageTracking";
 
 function Router() {
+  usePageTracking();
+
   return (
     <Switch>
       <Route path={"\\"} component={Home} />
