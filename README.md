@@ -25,12 +25,7 @@
    cp .env.example .env
    ```
 
-4. **データベースのセットアップ**
-   ```bash
-   pnpm db:push
-   ```
-
-5. **開発サーバーの起動**
+4. **開発サーバーの起動**
    ```bash
    pnpm dev
    ```
