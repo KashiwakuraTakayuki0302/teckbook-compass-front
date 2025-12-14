@@ -10,7 +10,6 @@
     "check": "tsc --noEmit",
     "format": "prettier --write .",
     "test": "vitest run",
-    "generate": "pnpm dlx openapi-typescript-codegen --input http://localhost:8080/api/openapi.yaml --output client/src/api --client axios",
     "generate:api": "openapi --input http://localhost:8080/api/openapi.yaml --output ./client/src/api --client axios"
   },
   "dependencies": {

@@ -38,9 +38,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Generate API client
-        run: pnpm generate
-
       # ⑥ build
       - name: Build
         run: pnpm build
