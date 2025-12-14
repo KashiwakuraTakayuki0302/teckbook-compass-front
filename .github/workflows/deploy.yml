@@ -13,23 +13,36 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # ① Node.js をセットアップ
       - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # ② corepack を有効化（pnpm を使えるようにする）
+      - name: Enable corepack
+        run: corepack enable
+
+      # ③ pnpm のバージョンを有効化
+      - name: Setup pnpm
+        run: corepack prepare pnpm@9 --activate
+
+      # ④ pnpm キャッシュ
+      - name: Setup pnpm cache
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 9
-
+      # ⑤ install
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # ⑥ build
       - name: Build
         run: pnpm build
 
+      # ⑦ AWS 認証
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -37,9 +50,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      # ⑧ S3 デプロイ
       - name: Deploy to S3
         run: aws s3 sync dist s3://${{ secrets.S3_BUCKET }} --delete
 
+      # ⑨ CloudFront 反映
       - name: CloudFront Invalidation
         run: |
           aws cloudfront create-invalidation \
