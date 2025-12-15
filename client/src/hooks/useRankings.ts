@@ -7,6 +7,6 @@ import { RankingsService } from '@/api';
 export const useRankings = (range: 'all' | 'monthly' | 'yearly' = 'all') => {
     return useQuery({
         queryKey: ['rankings', range],
-        queryFn: () => RankingsService.getRankings(range, 100),
+        queryFn: () => RankingsService.getRankings(range, 50),
     });
 };
