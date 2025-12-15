@@ -153,7 +153,7 @@ export default function BookDetail() {
 
     // クリーンアップ: コンポーネントがアンマウントされたらデフォルトのタイトルに戻す
     return () => {
-      document.title = "技術書コンパス｜技術書を活用してスキルを加速させるコツ";
+      document.title = "エンジニアが本当におすすめする技術書ランキング|Qiita発・毎月更新【技術書コンパス】";
     };
   }, [book?.title]);
 

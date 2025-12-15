@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useLocation, useSearch } from "wouter";
 import { Button } from "@/components/ui/button";
 import { BookCard } from "@/components/BookCard";
@@ -19,6 +20,10 @@ export default function Home() {
     newParams.set("tab", period);
     setLocation(`${location}?${newParams.toString()}`);
   };
+
+  useEffect(() => {
+    document.title = "エンジニアが本当におすすめする技術書ランキング|Qiita発・毎月更新【技術書コンパス】";
+  }, []);
   // TODO: API改修後に復活させる
   // const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError } = useCategoriesWithBooks();
   const { data: rankings, isLoading: isRankingsLoading, isError: isRankingsError } = useRankings(rankingPeriod);
