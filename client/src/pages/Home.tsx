@@ -114,7 +114,7 @@ export default function Home() {
             </div>
           </div>
           {isRankingsError ? (
-            <div className="text-center text-red-500">情報を取得に失敗しました</div>
+            <div className="text-center text-red-500">情報の取得に失敗しました</div>
           ) : isRankingsLoading ? (
             <div className="text-center">読み込み中...</div>
           ) : (
