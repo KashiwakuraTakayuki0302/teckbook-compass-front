@@ -2,7 +2,7 @@ import { useRoute } from "wouter";
 import { useState, useEffect } from "react";
 import { Star, ShoppingCart, ExternalLink, Loader2, Heart, Bookmark, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Layout } from "@/components/Layout";
+import { Layout } from "@/components/common/Layout";
 import { useBookDetail } from "@/hooks/useBookDetail";
 import noImage from "@/assets/no-image.svg";
 import type { QiitaArticle } from "@/api/models/QiitaArticle";

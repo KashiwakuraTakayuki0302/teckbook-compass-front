@@ -1,32 +1,18 @@
 import { useEffect } from "react";
-import { useLocation, useSearch } from "wouter";
-import { Button } from "@/components/ui/button";
-import { BookCard } from "@/components/BookCard";
+import { Layout } from "@/components/common/Layout";
+import { RankingSection } from "@/components/ranking/RankingSection";
 // TODO: API改修後に復活させる
-// import { TrendCard } from "@/components/TrendCard";
-import { Layout } from "@/components/Layout";
-// TODO: API改修後に復活させる
-// import { useCategoriesWithBooks } from "@/hooks/useCategories";
-import { useRankings } from "@/hooks/useRankings";
+// import { TrendCard } from "@/components/category/TrendCard";
+
+
 
 export default function Home() {
-  const [location, setLocation] = useLocation();
-  const search = useSearch();
-  const params = new URLSearchParams(search);
-  const rankingPeriod = (params.get("tab") as 'all' | 'monthly' | 'yearly') || 'all';
-
-  const setRankingPeriod = (period: 'all' | 'monthly' | 'yearly') => {
-    const newParams = new URLSearchParams(search);
-    newParams.set("tab", period);
-    setLocation(`${location}?${newParams.toString()}`);
-  };
-
   useEffect(() => {
     document.title = "エンジニアが本当におすすめする技術書ランキング|Qiita発・毎月更新【技術書コンパス】";
   }, []);
   // TODO: API改修後に復活させる
   // const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError } = useCategoriesWithBooks();
-  const { data: rankings, isLoading: isRankingsLoading, isError: isRankingsError } = useRankings(rankingPeriod);
+
 
   return (
     <Layout>
@@ -88,72 +74,8 @@ export default function Home() {
       */}
 
       {/* 技術書ランキングセクション */}
-      <section className="py-12 md:py-16">
-        <div className="container">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
-              📚 総合ランキング
-            </h2>
-            <p className="text-sm text-muted-foreground mb-4">
-              Qiita記事で最も言及されている技術書
-            </p>
-            <div className="flex justify-center gap-2">
-              <Button
-                variant={rankingPeriod === 'all' ? 'default' : 'outline'}
-                size="sm"
-                className="disabled:opacity-100"
-                onClick={() => setRankingPeriod('all')}
-                disabled={rankingPeriod === 'all'}
-              >
-                すべて
-              </Button>
-              <Button
-                variant={rankingPeriod === 'monthly' ? 'default' : 'outline'}
-                size="sm"
-                className="disabled:opacity-100"
-                onClick={() => setRankingPeriod('monthly')}
-                disabled={rankingPeriod === 'monthly'}
-              >
-                月間
-              </Button>
-              <Button
-                variant={rankingPeriod === 'yearly' ? 'default' : 'outline'}
-                size="sm"
-                className="disabled:opacity-100"
-                onClick={() => setRankingPeriod('yearly')}
-                disabled={rankingPeriod === 'yearly'}
-              >
-                年間
-              </Button>
-            </div>
-          </div>
-          {isRankingsError ? (
-            <div className="text-center text-red-500">情報の取得に失敗しました</div>
-          ) : isRankingsLoading ? (
-            <div className="text-center">読み込み中...</div>
-          ) : (
-            <div className="space-y-4">
-              {rankings?.items?.map((book: any) => (
-                <BookCard
-                  key={book.bookId}
-                  id={book.bookId}
-                  rank={book.rank}
-                  title={book.title}
-                  author={book.author}
-                  publishDate={book.publishedAt || "不明"}
-                  coverImage={book.thumbnail}
-                  rating={book.rating || 0}
-                  reviewCount={book.reviewCount || 0}
-                  qiitaMentions={book.articleCount || 0}
-                  tags={book.tags || []}
-                  amazonUrl={book.amazonUrl}
-                  rakutenUrl={book.rakutenUrl}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+      <RankingSection />
+
 
     </Layout>
   );
