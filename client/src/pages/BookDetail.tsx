@@ -161,13 +161,17 @@ export default function BookDetail() {
             )}
 
             {/* Qiitaで紹介されている記事 */}
-            <QiitaArticlesSection articles={book.qiitaArticles} />
+            {book.qiitaArticles && book.qiitaArticles.length > 0 && (
+              <QiitaArticlesSection articles={book.qiitaArticles} />
+            )}
 
             {/* 楽天レビュー */}
-            <RakutenReviewSection
-              rakutenReviewSummary={book.rakutenReviewSummary}
-              rakutenUrl={book.purchaseLinks?.rakuten}
-            />
+            {book.rakutenReviewSummary && book.rakutenReviewSummary.totalReviews && (
+              <RakutenReviewSection
+                rakutenReviewSummary={book.rakutenReviewSummary}
+                rakutenUrl={book.purchaseLinks?.rakuten}
+              />
+            )}
           </div>
         </div>
       </div>

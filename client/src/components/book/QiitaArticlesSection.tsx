@@ -2,18 +2,14 @@ import { useState } from "react";
 import { ExternalLink, Heart, Bookmark, MessageCircle } from "lucide-react";
 import type { QiitaArticle } from "@/api/models/QiitaArticle";
 
-const INITIAL_DISPLAY_COUNT = 5;
-
 interface QiitaArticlesSectionProps {
-  articles?: QiitaArticle[];
+  articles: QiitaArticle[];
 }
+
+const INITIAL_DISPLAY_COUNT = 5;
 
 export function QiitaArticlesSection({ articles }: QiitaArticlesSectionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-
-  if (!articles || articles.length === 0) {
-    return null;
-  }
 
   const totalCount = articles.length;
   const displayedArticles = isExpanded ? articles : articles.slice(0, INITIAL_DISPLAY_COUNT);
@@ -61,12 +57,12 @@ export function QiitaArticlesSection({ articles }: QiitaArticlesSectionProps) {
         ))}
       </div>
 
-      {hasMore && !isExpanded && (
+      {hasMore && (
         <button
-          onClick={() => setIsExpanded(true)}
+          onClick={() => setIsExpanded(!isExpanded)}
           className="mt-4 text-blue-600 hover:text-blue-700 font-medium text-sm hover:underline"
         >
-          もっと見る（残り{totalCount - INITIAL_DISPLAY_COUNT}件）
+          {isExpanded ? "閉じる" : `もっと見る（残り${totalCount - INITIAL_DISPLAY_COUNT}件）`}
         </button>
       )}
     </div>

@@ -1,6 +1,11 @@
 import { Star, ExternalLink } from "lucide-react";
 import type { RakutenReviewSummary } from "@/api/models/RakutenReviewSummary";
 
+interface RakutenReviewSectionProps {
+  rakutenReviewSummary: RakutenReviewSummary;
+  rakutenUrl?: string;
+}
+
 function renderStars(rating: number) {
   return (
     <div className="flex gap-0.5">
@@ -15,18 +20,10 @@ function renderStars(rating: number) {
   );
 }
 
-interface RakutenReviewSectionProps {
-  rakutenReviewSummary?: RakutenReviewSummary;
-  rakutenUrl?: string;
-}
-
 export function RakutenReviewSection({
   rakutenReviewSummary,
   rakutenUrl,
 }: RakutenReviewSectionProps) {
-  if (!rakutenReviewSummary || !rakutenReviewSummary.totalReviews) {
-    return null;
-  }
 
   return (
     <div>
