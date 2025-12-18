@@ -288,12 +288,14 @@ export async function getBookCategories(bookId: number): Promise<{ id: number; n
 }
 
 export async function getBooksByCategory(categoryId: number, limit: number = 10): Promise<Book[]> {
-  const bookIds = bookCategories
-    .filter(bc => bc.categoryId === categoryId)
-    .map(bc => bc.bookId);
+  const bookIdSet = new Set(
+    bookCategories
+      .filter(bc => bc.categoryId === categoryId)
+      .map(bc => bc.bookId)
+  );
 
   return books
-    .filter(b => bookIds.includes(b.id))
+    .filter(b => bookIdSet.has(b.id))
     .sort((a, b) => b.qiitaMentions - a.qiitaMentions)
     .slice(0, limit);
 }
