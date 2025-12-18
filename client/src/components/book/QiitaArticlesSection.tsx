@@ -19,7 +19,7 @@ export function QiitaArticlesSection({ articles }: QiitaArticlesSectionProps) {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold flex items-center gap-2">
-          Qiitaで紹介されている記事
+          📚 Qiitaで紹介されている記事
         </h3>
         <span className="text-sm text-muted-foreground">全{totalCount}件</span>
       </div>
