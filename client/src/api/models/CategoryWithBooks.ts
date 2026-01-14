@@ -21,6 +21,10 @@ export type CategoryWithBooks = {
      */
     trendTag: CategoryWithBooks.trendTag;
     /**
+     * Total score of books in this category
+     */
+    score: number;
+    /**
      * Top ranked books in this category
      */
     books: Array<RankedBook>;

@@ -19,5 +19,9 @@ export type RankedBook = {
      * URL to book cover image
      */
     thumbnail: string;
+    /**
+     * Book score
+     */
+    score: number;
 };
 

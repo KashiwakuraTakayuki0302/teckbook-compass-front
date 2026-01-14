@@ -1,18 +1,18 @@
 import { useEffect } from "react";
+import { useLocation } from "wouter";
 import { Layout } from "@/components/common/Layout";
 import { RankingSection } from "@/components/ranking/RankingSection";
-// TODO: API改修後に復活させる
-// import { TrendCard } from "@/components/category/TrendCard";
-
-
+import { TrendCard } from "@/components/category/TrendCard";
+import { Button } from "@/components/ui/button";
+import { useCategoriesWithBooks } from "@/hooks/useCategories";
 
 export default function Home() {
+  const [, setLocation] = useLocation();
+  
   useEffect(() => {
     document.title = "エンジニアが本当におすすめする技術書ランキング|Qiita発・毎月更新【技術書コンパス】";
   }, []);
-  // TODO: API改修後に復活させる
-  // const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError } = useCategoriesWithBooks();
-
+  const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError } = useCategoriesWithBooks({ maxCategories: 3, limit: 3 });
 
   return (
     <Layout>
@@ -36,8 +36,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TODO: API改修後に復活させる - トレンド分野セクション */}
-      {/*
       <section className="py-12 md:py-16 bg-gradient-to-b from-background to-muted/30">
         <div className="container">
           <div className="text-center mb-10">
@@ -47,6 +45,16 @@ export default function Home() {
             <p className="text-muted-foreground">
               最新のトレンドをキャッチして、先取りしよう
             </p>
+          </div>
+          <div className="flex justify-center mb-6">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => setLocation("/categories")}
+              className="text-base"
+            >
+              他のカテゴリを見る
+            </Button>
           </div>
           {isCategoriesError ? (
             <div className="text-center text-red-500">情報を取得に失敗しました</div>
@@ -63,7 +71,7 @@ export default function Home() {
                   topBooks={category.books?.map((book: any) => ({
                     id: book.bookId,
                     title: book.title,
-                    coverImage: book.image,
+                    thumbnail: book.thumbnail,
                   })) || []}
                 />
               ))}
@@ -71,12 +79,9 @@ export default function Home() {
           )}
         </div>
       </section>
-      */}
 
       {/* 技術書ランキングセクション */}
       <RankingSection />
-
-
     </Layout>
   );
 }

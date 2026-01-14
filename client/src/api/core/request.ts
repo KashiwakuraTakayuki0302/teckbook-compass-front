@@ -4,7 +4,7 @@
 /* eslint-disable */
 import axios from 'axios';
 import type { AxiosError, AxiosRequestConfig, AxiosResponse, AxiosInstance } from 'axios';
-
+import FormData from 'form-data';
 
 import { ApiError } from './ApiError';
 import type { ApiRequestOptions } from './ApiRequestOptions';
@@ -152,7 +152,7 @@ export const getHeaders = async (config: OpenAPIConfig, options: ApiRequestOptio
         resolve(options, config.HEADERS),
     ]);
 
-    const formHeaders = {} as Record<string, string>;
+    const formHeaders = typeof formData?.getHeaders === 'function' && formData?.getHeaders() || {}
 
     const headers = Object.entries({
         Accept: 'application/json',
@@ -160,11 +160,11 @@ export const getHeaders = async (config: OpenAPIConfig, options: ApiRequestOptio
         ...options.headers,
         ...formHeaders,
     })
-        .filter(([_, value]) => isDefined(value))
-        .reduce((headers, [key, value]) => ({
-            ...headers,
-            [key]: String(value),
-        }), {} as Record<string, string>);
+    .filter(([_, value]) => isDefined(value))
+    .reduce((headers, [key, value]) => ({
+        ...headers,
+        [key]: String(value),
+    }), {} as Record<string, string>);
 
     if (isStringWithValue(token)) {
         headers['Authorization'] = `Bearer ${token}`;
