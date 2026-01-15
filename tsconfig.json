@@ -39,6 +39,9 @@
       ],
       "@shared/*": [
         "./shared/*"
+      ],
+      "form-data": [
+        "./client/src/lib/form-data-shim.ts"
       ]
     }
   }
