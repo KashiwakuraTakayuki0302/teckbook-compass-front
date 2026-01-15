@@ -38,10 +38,6 @@ export function TrendCard({
           <span className="text-3xl">{icon}</span>
           <h3 className="text-xl font-bold text-foreground">{category}</h3>
         </div>
-        {/* <Badge variant="secondary" className="bg-accent/20 text-accent-foreground font-semibold">
-          <TrendingUp className="w-3 h-3 mr-1" />
-          {trendIndicator}
-        </Badge> */}
       </div>
 
       {/* トップ3書籍 */}
@@ -52,9 +48,6 @@ export function TrendCard({
             onClick={() => handleBookClick(book.id)}
             className="flex items-center gap-3 p-2 rounded hover:bg-muted/50 transition-colors cursor-pointer"
           >
-            {/* <span className="text-lg font-semibold text-muted-foreground w-6">
-              {index + 1}
-            </span> */}
             <div className="flex-shrink-0 flex items-center justify-center md:justify-start md:w-8">
               <div
                 className={`text-2xl md:text-4xl font-bold text-accent drop-shadow-sm`}
