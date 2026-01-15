@@ -5,6 +5,7 @@ import { RankingSection } from "@/components/ranking/RankingSection";
 import { TrendCard } from "@/components/category/TrendCard";
 import { Button } from "@/components/ui/button";
 import { useCategoriesWithBooks } from "@/hooks/useCategories";
+import { CategoryWithBooks, type RankedBook } from "@/api";
 
 export default function Home() {
   const [, setLocation] = useLocation();
@@ -62,19 +63,26 @@ export default function Home() {
             <div className="text-center">読み込み中...</div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {categories?.items?.map((category: any, index: number) => (
-                <TrendCard
-                  key={category.id || index}
-                  category={category.name}
-                  icon={category.icon || "📚"}
-                  trendIndicator={category.trendIndicator || "注目"}
-                  topBooks={category.books?.map((book: any) => ({
-                    id: book.bookId,
-                    title: book.title,
-                    thumbnail: book.thumbnail,
-                  })) || []}
-                />
-              ))}
+              {categories?.items?.map((category: CategoryWithBooks, index: number) => {
+                const trendIndicatorMap: Record<CategoryWithBooks.trendTag, string> = {
+                  [CategoryWithBooks.trendTag.HOT]: "🔥 急上昇",
+                  [CategoryWithBooks.trendTag.POPULAR]: "⭐ 人気",
+                  [CategoryWithBooks.trendTag.ATTENTION]: "👀 注目",
+                };
+                return (
+                  <TrendCard
+                    key={category.id || index}
+                    category={category.name}
+                    icon={category.icon || "📚"}
+                    trendIndicator={trendIndicatorMap[category.trendTag] || "注目"}
+                    topBooks={category.books?.map((book: RankedBook) => ({
+                      id: book.bookId,
+                      title: book.title,
+                      thumbnail: book.thumbnail,
+                    })) || []}
+                  />
+                );
+              })}
             </div>
           )}
         </div>

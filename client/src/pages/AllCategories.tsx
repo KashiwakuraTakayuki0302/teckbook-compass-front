@@ -3,6 +3,7 @@ import { Layout } from "@/components/common/Layout";
 import { Accordion } from "@/components/ui/accordion";
 import { useCategoriesWithBooks } from "@/hooks/useCategories";
 import { CategoryAccordion } from "@/components/category/CategoryAccordion";
+import type { CategoryWithBooks } from "@/api";
 
 // カテゴリの説明文マッピング
 const CATEGORY_DESCRIPTIONS: Record<string, string> = {
@@ -46,7 +47,7 @@ export default function AllCategories() {
         ) : (
           <div className="max-w-4xl mx-auto">
             <Accordion type="multiple" className="w-full">
-              {categories?.items?.map((category: any) => (
+              {categories?.items?.map((category: CategoryWithBooks) => (
                 <CategoryAccordion
                   key={category.id}
                   category={category}

@@ -1,6 +1,6 @@
 import { BookCard } from "@/components/book/BookCard";
 import { useQuery } from "@tanstack/react-query";
-import { BooksService } from "@/api";
+import { BooksService, type BookDetail } from "@/api";
 
 interface Book {
   rank: number;
@@ -19,21 +19,26 @@ export function CategoryBookList({ books }: CategoryBookListProps) {
   const bookDetailQueries = useQuery({
     queryKey: ['categoryBooks', books.map(b => b.bookId)],
     queryFn: async () => {
-      const details = await Promise.all(
+      const details = await Promise.allSettled(
         books.map(async (book) => {
-          try {
-            const detail = await BooksService.getBooks(book.bookId);
-            return { bookId: book.bookId, detail };
-          } catch (error) {
-            console.error(`Failed to fetch book details for ${book.bookId}:`, error);
-            return { bookId: book.bookId, detail: null };
-          }
+          const detail = await BooksService.getBooks(book.bookId);
+          return { bookId: book.bookId, detail };
         })
       );
-      return details.reduce((acc, { bookId, detail }) => {
-        acc[bookId] = detail;
+      return details.reduce((acc, result, index) => {
+        const bookId = books[index]?.bookId;
+        if (!bookId) return acc;
+        
+        if (result.status === 'fulfilled') {
+          const { detail } = result.value;
+          acc[bookId] = detail;
+        } else {
+          // Promise.allSettledでrejectedの場合も処理
+          console.error(`Failed to fetch book details for ${bookId}:`, result.reason);
+          acc[bookId] = null;
+        }
         return acc;
-      }, {} as Record<string, any>);
+      }, {} as Record<string, BookDetail | null>);
     },
     enabled: books.length > 0,
   });
